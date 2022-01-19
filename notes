@@ -1,0 +1,6 @@
+2 ideas 
+* send 2 "messages" (many sigs per messages) -> size to alloc
+										   -> actual message
+or
+* 1 message + dynamic alloc
+
