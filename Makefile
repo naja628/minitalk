@@ -5,9 +5,9 @@ CLIENT_NAME=client
 CLIENT_SRC=client.c
 CLIENT_OBJ=${CLIENT_SRC:.c=.o}
 CFLAGS=-Wall -Wextra -Werror -I ${LIBFT_DIR}
-LIBFT_DIR=libft/
-LIBFT_BIN=${LIBFT_DIR}/libft.a
-LINK_LIB=-L ${LIBFT_DIR} -lft
+LIBFT_DIR=ft_printf/
+LIBFT_BIN=${LIBFT_DIR}/libftprintf.a
+LINK_LIB=-L ${LIBFT_DIR} -lftprintf
 
 all:
 	make ${SERVER_NAME}
@@ -23,7 +23,7 @@ ${CLIENT_NAME}: ${CLIENT_OBJ} ${LIBFT_BIN}
 	gcc ${CFLAGS} ${CLIENT_OBJ} -o $@ ${LINK_LIB}
 
 ${LIBFT_BIN}:
-	cd libft && make
+	cd ${LIBFT_DIR} && make
 
 clean: 
 	cd bonus && make clean
@@ -33,7 +33,7 @@ clean:
 fclean: clean
 	rm -rf ${SERVER_NAME} ${CLIENT_NAME}
 	cd ${LIBFT_DIR} && make fclean
-	cd bouns && make fclean
+	cd bonus && make fclean
 
 re:
 	make fclean

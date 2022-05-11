@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
-#include "libft.h"
+#include "ft_printf.h"
 #include "message_bonus.h"
 
 void	ft_receive_bit(int signum, siginfo_t *info, void *not_used)
@@ -19,12 +19,13 @@ void	ft_receive_bit(int signum, siginfo_t *info, void *not_used)
 	++ibit;
 	if (ibit == 8)
 	{
-		ft_append_byte(&message, byte);
 		if (byte == 0x00)
 		{
 			ft_flush_message(&message);
 			write(1, "\n", 1);
 		}
+		else
+			ft_append_byte(&message, byte);
 		ibit = 0;
 		byte = 0x00;
 	}
@@ -43,9 +44,7 @@ int	main(void)
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
 	pid = getpid();
-	ft_putstr_fd("PID :", 1);
-	ft_putnbr_fd((int) pid, 1);
-	ft_putstr_fd("\n", 1);
+	ft_printf("PID: %d\n", (int) pid);
 	while (1)
 		pause();
 	return (0);

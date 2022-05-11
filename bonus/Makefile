@@ -1,13 +1,13 @@
-SERVER_NAME=../server
+SERVER_NAME=../server_bonus
 SERVER_SRC=server_bonus.c message_bonus.c
 SERVER_OBJ=${SERVER_SRC:.c=.o}
-CLIENT_NAME=../client
+CLIENT_NAME=../client_bonus
 CLIENT_SRC=client_bonus.c sender_bonus.c
 CLIENT_OBJ=${CLIENT_SRC:.c=.o}
 CFLAGS=-Wall -Wextra -Werror -I ${LIBFT_DIR}
-LIBFT_DIR=../libft/
-LIBFT_BIN=${LIBFT_DIR}/libft.a
-LINK_LIB=-L ${LIBFT_DIR} -lft
+LIBFT_DIR=../ft_printf/
+LIBFT_BIN=${LIBFT_DIR}/libftprintf.a
+LINK_LIB=-L ${LIBFT_DIR} -lftprintf
 
 all:
 	make ${SERVER_NAME}

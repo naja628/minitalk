@@ -34,7 +34,7 @@ void	ft_send_message(pid_t pid, char *message)
 
 	g_sender.message = message;
 	g_sender.pid = pid;
-	ft_send_bit_plus(SIGUSR1);
+	kill(getpid(), SIGUSR1);
 	while (g_sender.message)
 		usleep(dt_us);
 }

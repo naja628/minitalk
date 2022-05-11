@@ -5,7 +5,7 @@
 
 void	ft_send_byte(pid_t pid, char byte)
 {
-	const int	dt_us = 500;
+	const int	dt_us = 2000;
 	int			ibit;
 
 	ibit = 0;

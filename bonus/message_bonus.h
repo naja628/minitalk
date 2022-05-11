@@ -11,7 +11,7 @@ typedef struct s_message
 }	t_message;
 
 void	ft_init_message(t_message *m);
-void	ft_append_byte(t_message *m, t_uchar byte);
+void	ft_append_byte(t_message *m, t_byte byte);
 void	ft_flush_message(t_message *m);
 
 #endif
