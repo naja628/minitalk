@@ -1,17 +1,37 @@
-CLIENT_SRC=client.c
-SERVER_SRC=server.c
-SERVER_NAME=server
-CLIENT_NAME=client
+SERVER_NAME=../server
+SERVER_SRC=server_bonus.c message_bonus.c
+SERVER_OBJ=${SERVER_SRC:.c=.o}
+CLIENT_NAME=../client
+CLIENT_SRC=client_bonus.c sender_bonus.c
+CLIENT_OBJ=${CLIENT_SRC:.c=.o}
+CFLAGS=-Wall -Wextra -Werror -I ${LIBFT_DIR}
+LIBFT_DIR=../libft/
+LIBFT_BIN=${LIBFT_DIR}/libft.a
+LINK_LIB=-L ${LIBFT_DIR} -lft
 
-# Note: 1 .c per exe so no .o are required
+all:
+	make ${SERVER_NAME}
+	make ${CLIENT_NAME}
 
-all: $(CLIENT_NAME) $(SERVER_NAME)
-	@#empty
+${SERVER_NAME}: ${SERVER_OBJ} ${LIBFT_BIN} 
+	gcc ${CFLAGS} ${SERVER_OBJ} -o $@ ${LINK_LIB}
 
-$(SERVER_NAME): $(SERVER_SRC)
-	gcc -o $(SERVER_NAME) $(SERVER_SRC)
-	
-$(CLIENT_NAME): $(CLIENT_SRC)
-	gcc -o $(CLIENT_NAME) $(CLIENT_SRC)
+${CLIENT_NAME}: ${CLIENT_OBJ} ${LIBFT_BIN}
+	gcc ${CFLAGS} ${CLIENT_OBJ} -o $@ ${LINK_LIB}
 
-.PHONY: all
+${LIBFT_BIN}:
+	cd libft && make
+
+clean: 
+	rm -rf *.o
+	cd ${LIBFT_DIR} && make clean 
+
+fclean: clean
+	rm -rf ${SERVER_NAME} ${CLIENT_NAME}
+	cd ${LIBFT_DIR} && make fclean
+
+re:
+	make fclean
+	make all
+
+.PHONY: all clean fclean re
