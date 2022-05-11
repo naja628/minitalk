@@ -1,0 +1,4 @@
+#!/bin/bash
+trap '' SIGUSR1
+trap '' SIGUSR2
+head $1
