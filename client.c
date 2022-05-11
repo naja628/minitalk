@@ -1,39 +1,49 @@
-#include <signal.h>
 #include <unistd.h>
-#include <sys/types.h>
+#include <stdlib.h>
+#include <signal.h>
 #include "libft.h"
 
-void	ft_send_byte(pid_t pid, char byte)
+void	ft_transmit_byte(pid_t pid, char byte)
 {
-	const int	dt_us = 2000;
-	int			ibit;
+	int ibit;
 
 	ibit = 0;
 	while (ibit < 8)
 	{
-		if ((unsigned char) byte & (0x80 >> ibit))
+		if (byte & (0x80 >> ibit))
 			kill(pid, SIGUSR2);
-		else 
+		else
 			kill(pid, SIGUSR1);
 		++ibit;
-		usleep(dt_us);
+		usleep(250);
 	}
 }
 
-void	ft_send_message(pid_t pid, char *message)
+void	ft_ntransmit_term(pid_t pid, void *buff, size_t n)
 {
-	while (*message)
-		ft_send_byte(pid, *(message++));
-	ft_send_byte(pid, '\0');
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+		ft_transmit_byte(pid, ((char *) buff)[i++]);
+	ft_transmit_byte(pid, '\0');
 }
 
-int	main(int ac, char **av)
+int main(int ac, char **av)
 {
+	pid_t	server_pid;
+	char	*message;
+	size_t	message_len;
+
 	if (ac != 3)
 	{
-		ft_putstr_fd("usage: client <pid> <message>\n", 2);
-		return (1);
+		write(2, "error : call with './client <pid> <message>'\n", 46);
+		exit(-1);
 	}
-	ft_send_message(ft_atoi(av[1]), av[2]);
+	server_pid = ft_atoi(av[1]);
+	message = av[2];
+	message_len = ft_strlen(message);
+	ft_ntransmit_term(server_pid, &message_len, sizeof(size_t));
+	ft_ntransmit_term(server_pid, message, message_len);
 	return (0);
 }

@@ -1,39 +1,61 @@
+#include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <signal.h>
 #include "libft.h"
+#include "ft_printf.h"
 
-void	ft_receive_bit(int signum)
+char	*g_buffer;
+
+#include <stdio.h>
+void	ft_sigs_to_bin(int signum)
 {
-	static char	byte = 0x00;
 	static int	ibit = 0;
+	static char	cur_byte;
 
 	if (signum == SIGUSR2)
-		byte |= ((unsigned char) 0x80 >> ibit);
+		cur_byte |= (0x80 >> ibit);
 	++ibit;
+	//printf("%c", (signum == SIGUSR1)? '0' : '1');
 	if (ibit == 8)
 	{
-		if (byte == '\0')
-			write(1, "\n", 1);
-		else 
-			write(1, &byte, 1);
+		//printf("\n");
 		ibit = 0;
-		byte = 0x00;
+		*(g_buffer++) = cur_byte;
+		cur_byte = 0x00;
 	}
 }
 
-int	main(void)
+void	ft_nreceive(void *buff, size_t n)
 {
-	pid_t	pid;
-
-	signal(SIGUSR1, ft_receive_bit);
-	signal(SIGUSR2, ft_receive_bit);
-	pid = getpid();
-	ft_putstr_fd("PID: ", 1);
-	ft_putnbr_fd(pid, 1);
-	ft_putstr_fd("\n", 1);
-	while (1)
-		pause();
-	return (1);
+	ft_bzero(buff, n);
+	g_buffer = buff;
+	((char *) buff)[n] = 0xff;
+	while (((char *) buff)[n] != '\0')
+		usleep(500);
 }
 
+int	main()
+{
+	pid_t	pid;
+	size_t	sz_buff[2];
+	char	*str;
+
+	pid = getpid();
+	ft_printf("server pid: %d\n", pid);
+	signal(SIGUSR1, ft_sigs_to_bin);
+	signal(SIGUSR2, ft_sigs_to_bin);
+	while(1)
+	{
+		ft_nreceive(sz_buff, sizeof(size_t));
+		str = malloc(sz_buff[0] + 1);
+		if (!str)
+		{
+			write(2, "malloc error\n", 13);
+			exit(-1);
+		}
+		ft_nreceive(str, sz_buff[0]);
+		write(1, str, sz_buff[0]);
+		write(1, "\n", 1);
+		free(str);
+	}
+}
