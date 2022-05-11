@@ -11,6 +11,10 @@ void	ft_receive_bit(int signum, siginfo_t *info, void *not_used)
 	static t_message	message = {NULL, 0, 0};
 
 	(void) not_used;
+	//weird bug handling
+	static pid_t	pid = 0;
+	if (info->si_pid)
+		pid = info->si_pid;
 	kill(info->si_pid, SIGUSR1);
 	if (!message.buffer)
 		ft_init_message(&message);
