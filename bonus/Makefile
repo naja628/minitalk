@@ -20,7 +20,7 @@ ${CLIENT_NAME}: ${CLIENT_OBJ} ${LIBFT_BIN}
 	gcc ${CFLAGS} ${CLIENT_OBJ} -o $@ ${LINK_LIB}
 
 ${LIBFT_BIN}:
-	cd libft && make
+	cd ${LIBFT_DIR} && make
 
 clean: 
 	rm -rf *.o

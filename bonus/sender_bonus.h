@@ -10,6 +10,6 @@ typedef struct s_sender
 }	t_sender;
 
 void	ft_send_bit_plus(int signum);
-void	ft_send_message(char *message, pid_t pid);
+void	ft_send_message(pid_t pid, char *message);
 
 #endif
