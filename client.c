@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: najacque <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/12 15:39:22 by najacque          #+#    #+#             */
+/*   Updated: 2022/05/12 15:39:24 by najacque         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -5,7 +17,7 @@
 
 void	ft_transmit_byte(pid_t pid, char byte)
 {
-	int ibit;
+	int	ibit;
 
 	ibit = 0;
 	while (ibit < 8)
@@ -29,7 +41,7 @@ void	ft_ntransmit_term(pid_t pid, void *buff, size_t n)
 	ft_transmit_byte(pid, '\0');
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	pid_t	server_pid;
 	char	*message;

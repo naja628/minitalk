@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: najacque <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/12 15:39:31 by najacque          #+#    #+#             */
+/*   Updated: 2022/05/12 15:39:31 by najacque         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signal.h>
 #include <sys/types.h>
 #include "libft.h"
@@ -6,7 +18,6 @@
 int	main(int ac, char **av)
 {
 	pid_t	server_pid;
-	//struct sigaction	act;
 
 	if (ac != 3)
 	{
@@ -19,11 +30,6 @@ int	main(int ac, char **av)
 		ft_putstr_fd("Error: first argument must be a pid\n", 2);
 		return (1);
 	}
-	//sigemptyset(&(act.sa_mask));
-	//sigaddset(&(act.sa_mask), SIGUSR1);
-	//act.sa_flags = 0;
-	//act.sa_handler = ft_send_bit_plus;
-	//sigaction(SIGUSR1, &act, NULL);
 	signal(SIGUSR1, ft_send_bit_plus);
 	ft_send_message(server_pid, av[2]);
 	return (0);

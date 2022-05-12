@@ -1,8 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: najacque <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/12 15:39:35 by najacque          #+#    #+#             */
+/*   Updated: 2022/05/12 15:39:35 by najacque         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
 #include "ft_printf.h"
 #include "message_bonus.h"
+
+static pid_t	ft_last_if_zero(pid_t siginfo_pid)
+{
+	static pid_t	last_pid = 0;
+
+	if (siginfo_pid)
+		last_pid = siginfo_pid;
+	return (last_pid);
+}
 
 void	ft_receive_bit(int signum, siginfo_t *info, void *not_used)
 {
@@ -11,11 +32,7 @@ void	ft_receive_bit(int signum, siginfo_t *info, void *not_used)
 	static t_message	message = {NULL, 0, 0};
 
 	(void) not_used;
-	//weird bug handling
-	static pid_t	pid = 0;
-	if (info->si_pid)
-		pid = info->si_pid;
-	kill(pid, SIGUSR1);
+	kill(ft_last_if_zero(info->si_pid), SIGUSR1);
 	if (!message.buffer)
 		ft_init_message(&message);
 	if (signum == SIGUSR2)
