@@ -6,7 +6,6 @@
 int	main(int ac, char **av)
 {
 	pid_t	server_pid;
-	//struct sigaction	act;
 
 	if (ac != 3)
 	{
@@ -16,11 +15,6 @@ int	main(int ac, char **av)
 	server_pid = ft_atoi(av[1]);
 	if (server_pid == 0)
 		ft_putstr_fd("Error: first argument must be a pid\n", 2);
-	//sigemptyset(&(act.sa_mask));
-	//sigaddset(&(act.sa_mask), SIGUSR1);
-	//act.sa_flags = 0;
-	//act.sa_handler = ft_send_bit_plus;
-	//sigaction(SIGUSR1, &act, NULL);
 	signal(SIGUSR1, ft_send_bit_plus);
 	ft_send_message(server_pid, av[2]);
 	return (0);

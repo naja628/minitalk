@@ -4,6 +4,15 @@
 #include "ft_printf.h"
 #include "message_bonus.h"
 
+static pid_t	ft_last_if_zero(pid_t siginfo_pid)
+{
+	static pid_t	last_pid = 0;
+
+	if (siginfo_pid)
+		last_pid = siginfo_pid;
+	return (last_pid);
+}
+
 void	ft_receive_bit(int signum, siginfo_t *info, void *not_used)
 {
 	static int			ibit = 0;
@@ -11,11 +20,7 @@ void	ft_receive_bit(int signum, siginfo_t *info, void *not_used)
 	static t_message	message = {NULL, 0, 0};
 
 	(void) not_used;
-	//weird bug handling
-	static pid_t	pid = 0;
-	if (info->si_pid)
-		pid = info->si_pid;
-	kill(pid, SIGUSR1);
+	kill(ft_last_if_zero(info->si_pid), SIGUSR1);
 	if (!message.buffer)
 		ft_init_message(&message);
 	if (signum == SIGUSR2)

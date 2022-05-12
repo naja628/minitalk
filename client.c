@@ -5,7 +5,7 @@
 
 void	ft_transmit_byte(pid_t pid, char byte)
 {
-	int ibit;
+	int	ibit;
 
 	ibit = 0;
 	while (ibit < 8)
@@ -29,7 +29,7 @@ void	ft_ntransmit_term(pid_t pid, void *buff, size_t n)
 	ft_transmit_byte(pid, '\0');
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	pid_t	server_pid;
 	char	*message;
