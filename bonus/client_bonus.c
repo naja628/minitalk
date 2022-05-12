@@ -15,7 +15,10 @@ int	main(int ac, char **av)
 	}
 	server_pid = ft_atoi(av[1]);
 	if (server_pid == 0)
+	{
 		ft_putstr_fd("Error: first argument must be a pid\n", 2);
+		return (1);
+	}
 	//sigemptyset(&(act.sa_mask));
 	//sigaddset(&(act.sa_mask), SIGUSR1);
 	//act.sa_flags = 0;
